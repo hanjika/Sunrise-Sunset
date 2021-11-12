@@ -1,24 +1,70 @@
+body {
+    margin: 0;
+    background-color: #8ecae6;
+    height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    font-family: sans-serif;
 }
 
-h2 {
-    padding: 20px 0 0 0;
+h1 {
+    width: 100vw;
+    background-color: #003049;
+    color: #f9b200;
+    margin: 0 0 5vh 0;
+    padding: 5vh 0 0 0;
+    height: 10vh;
+    font-weight: 200;
+    text-transform: uppercase;
 }
 
-h3 {
-    padding-bottom: 20px;
+form {
+    height: 5vh;
+}
+
+input[type="text"], input[type="date"], input[type="submit"] {
+    font-family: 'Montserrat', sans-serif;
+}
+
+input[type="submit"] {
+    background-color: #003049;
+    color: #f9b200;
+    border: solid #003049;
+    text-transform: uppercase;
+}
+
+input[type="submit"]:hover {
+    color: white;
+    cursor: pointer;
 }
 
 .result {
-    width: 80vw;
+    height: 75vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    color: #003049;
+}
+
+h2, h3 {
+    font-weight: 500;
+    margin: 0;
+}
+
+h2 {
+    padding: 5vh 0 0 0;
+    text-transform: uppercase;
+}
+
+h3 {
+    padding-bottom: 5vh;
 }
 
 .sunrise-sunset-diagram, .sunrise-sunset-times {
@@ -29,18 +75,68 @@ h3 {
 
 .sunrise-sunset-diagram img {
     width: 10vw;
-    padding-bottom: 30vh;
+    z-index: 1;
 }
 
 .sunrise-sunset-diagram {
+    height: 40vh;
     align-items: flex-end;
 }
 
-.sunrise-sunset-diagram .half-sun {
+.sunrise-sunset-diagram .sunset-half-sun,
+.sunrise-sunset-diagram .sunrise-half-sun {
     height: 5vw;
     padding-bottom: 0;
 }
 
-.sunrise, .noon, .sunset {
+.sunrise-time, .noon-time, .sunset-time {
     width: 10vw;
+    font-size: 130%;
+    font-weight: 200;
+}
+
+.sunrise-sunset-times-div {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    background-color: #003049;
+    color: #f9b200;
+    z-index: 2;
+    height: 25vh;
+}
+
+.sunrise-half-sun {
+    animation: opacity 3s ease-in-out, rise 3s ease-in-out;
+}
+
+.full-sun {
+    align-self: flex-start;
+    animation: opacity 6s ease-in-out, rise 3s ease-in-out;
+    animation-delay: 0s, 3s;
+}
+
+.sunset-half-sun {
+    animation: opacity 9s ease-in-out, rise 3s ease-in-out;
+    animation-delay: 0s, 6s;
+}
+
+@keyframes rise {
+    0% {
+        transform: translateY(5vw);
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes opacity {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
