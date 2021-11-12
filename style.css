@@ -1,0 +1,46 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+h2 {
+    padding: 20px 0 0 0;
+}
+
+h3 {
+    padding-bottom: 20px;
+}
+
+.result {
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sunrise-sunset-diagram, .sunrise-sunset-times {
+    width: 80vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sunrise-sunset-diagram img {
+    width: 10vw;
+    padding-bottom: 30vh;
+}
+
+.sunrise-sunset-diagram {
+    align-items: flex-end;
+}
+
+.sunrise-sunset-diagram .half-sun {
+    height: 5vw;
+    padding-bottom: 0;
+}
+
+.sunrise, .noon, .sunset {
+    width: 10vw;
+}
