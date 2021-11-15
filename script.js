@@ -6,15 +6,12 @@ function submitForm(form) {
 }
 
 async function getLatLng(place, date) {
-    try {
-        const response = await fetch ('https://geocode.xyz/' + place + '?json=1');
-        const responseObj = await response.json();
-        const lat = await responseObj.latt;
-        const lng = await responseObj.longt;
-        getRiseSet(place, date, lat, lng);
-    } catch (error) {
-        console.log('Error')
-    }  
+    const response = await fetch ('https://geocode.xyz/' + place + '?json=1');
+    const responseObj = await response.json();
+    const lat = await responseObj.latt;
+    const lng = await responseObj.longt;
+
+    getRiseSet(place, date, lat, lng);
 }
 
 async function getRiseSet(place, date, lat, lng) {
@@ -28,38 +25,42 @@ async function getRiseSet(place, date, lat, lng) {
         sunset: await responseObj.results.sunset,
         noon: await responseObj.results.solar_noon
     }
+    getOffset(lat, lng, resultObj);
+}
 
+async function getOffset(lat, lng, resultObj) {
+    const response = await fetch('http://api.geonames.org/timezoneJSON?lat=' + lat + '&lng=' + lng + '&username=hanjika');
+    const responseObj = await response.json();
+    const offset = await responseObj.gmtOffset;
+
+    resultObj.sunrise = correctOffset(resultObj.sunrise, offset);
+    resultObj.sunset = correctOffset(resultObj.sunset, offset);
+    resultObj.noon = correctOffset(resultObj.noon, offset);
+    
     displayResults(resultObj);
 }
 
-/* TO CORRECT TIME OFFSET */
+function correctOffset(time, offset) {
+    const hms = '02:04:33';
+    const ampm = time.split(' ');
+    const [hours, minutes, seconds] = time.split(':');
+    let totalSeconds = (parseInt(hours) + parseInt(offset)) * 60 * 60 + parseInt(minutes) * 60 + parseInt(seconds);
 
-// async function getRiseSet(place, date, lat, lng) {
-//     const response = await fetch('https://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lng + '&date=' + date);
-//     const responseObj = await response.json();
-//     const sunriseUTC = await responseObj.results.sunrise;
-//     const sunsetUTC = await responseObj.results.sunset;
-//     const noonUTC = await responseObj.results.solar_noon;
+    if (ampm[1] === 'PM') {
+        totalSeconds += 43200;
+    }
 
-//     const timeresponse = await fetch('http://api.geonames.org/timezoneJSON?lat=' + lat + '&lng=' + lng +'&username=demo');
-//     const timeresponseObj = await timeresponse.json();
-//     console.log(timeresponseObj);
-    // const offset = await timeresponseObj.gmtOffset;
-    // console.log(offset);
+    const newTime = new Date(totalSeconds * 1000);
+    let hh = newTime.getUTCHours();
+    let mm = newTime.getUTCMinutes();
+    let ss = newTime.getSeconds();
 
-//     const resultObj = {
-//         place: place,
-//         date: date,
-//         sunrise: sunriseUTC,
-//         sunset: await responseObj.results.sunset,
-//         noon: await responseObj.results.solar_noon
-//     }
+    if (hh < 10) {hh = "0"+hh;}
+    if (mm < 10) {mm = "0"+mm;}
+    if (ss < 10) {ss = "0"+ss;}
 
-//     console.log(sunriseUTC);
-//     console.log(resultObj.sunrise)
-
-//     displayResults(resultObj);
-// }
+    return hh + ":" + mm + ":" + ss;
+}
 
 function alreadyResult() {
     const result = document.querySelector('.result');
